@@ -359,20 +359,35 @@ namespace Universal_Updater
                     filteredFolder = await UpdateFolder.CreateFolderAsync("Filtered Packages", CreationCollisionOption.ReplaceExisting);
                     DownProgress.Maximum = InstalledPackages.Length - 1;
                     DownProgress.IsIndeterminate = true;
-                    for (int i = 0; i < InstalledPackages.Length - 1; i++)
+                    for (int i = 0; i < knownPackages.Length; i++)
                     {
+                        bool isExist = false;
+                        string fileName = string.Empty;
                         foreach (var line in lines)
                         {
-                            if (line.ToUpper().Contains(knownPackages[0] + ".CAB") || line.ToUpper().Contains(knownPackages[1] + ".CAB") || line.ToUpper().Contains(knownPackages[2] + ".CAB") || line.ToUpper().Contains(knownPackages[3] + ".CAB") || line.ToUpper().Contains(knownPackages[4] + ".CAB") || line.ToUpper().Contains(knownPackages[5] + ".CAB") || line.ToUpper().Contains(knownPackages[6] + ".CAB") || line.ToUpper().Contains(knownPackages[7] + ".CAB") || line.ToUpper().Contains(knownPackages[8] + ".CAB")
-                            || line.ToUpper().Contains(knownPackages[0] + ".SPKG") || line.ToUpper().Contains(knownPackages[1] + ".SPKG") || line.ToUpper().Contains(knownPackages[2] + ".SPKG") || line.ToUpper().Contains(knownPackages[3] + ".SPKG") || line.ToUpper().Contains(knownPackages[4] + ".SPKG")
-                            || line.ToUpper().Contains(knownPackages[4] + ".CBS_") || line.ToUpper().Contains(knownPackages[5] + ".CBS_") || line.ToUpper().Contains(knownPackages[6] + ".CBS_") || line.ToUpper().Contains(knownPackages[7] + ".CBS_") || line.ToUpper().Contains(knownPackages[8] + ".CBS_"))
+                            fileName = line;
+                            if (line.ToUpper().Contains(knownPackages[i] + ".CAB"))
                             {
-                                var file = await UpdateFolder.GetFileAsync(line);
-                                if (file != null)
-                                {
-                                    await file.CopyAsync(filteredFolder, line, NameCollisionOption.ReplaceExisting);
-                                    break;
-                                }
+                                isExist = true;
+                                break;
+                            }
+                            else if(i < 5 && line.ToUpper().Contains(knownPackages[i] + ".SPKG"))
+                            {
+                                isExist = true;
+                                break;
+                            }
+                            else if (i > 3 && line.ToUpper().Contains(knownPackages[i] + ".CBS_"))
+                            {
+                                isExist = true;
+                                break;
+                            }
+                        }
+                        if (isExist)
+                        {
+                            var file = await UpdateFolder.GetFileAsync(fileName);
+                            if (file != null)
+                            {
+                                await file.CopyAsync(filteredFolder, fileName, NameCollisionOption.ReplaceExisting);
                             }
                         }
                     }
@@ -426,7 +441,7 @@ namespace Universal_Updater
                     });
                     DownProgress.Maximum = DownloadLinks.Length - 1;
                     DownPkgFold = await downloadsFolder.CreateFolderAsync($"Universal Updater ({SelectedUpdate.Content.ToString()})", CreationCollisionOption.ReplaceExisting);
-                    for (int i = 0; i < DownloadLinks.Length - 1; i++)
+                    for (int i = 0; i < DownloadLinks.Length; i++)
                     {
                         Uri sourceFile = new Uri(DownloadLinks[i]);
                         packageName = Path.GetFileName(sourceFile.LocalPath);
