@@ -1,0 +1,151 @@
+﻿<Page
+    x:Class="Universal_Updater.Home"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Universal_Updater"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto" MinHeight="100"/>
+        </Grid.RowDefinitions>
+        <StackPanel>
+            <TextBlock Text="Universal Updater" FontSize="35" FontWeight="Bold" Foreground="{ThemeResource SystemAccentColor}" Margin="10,0,0,0"/>
+            <TextBlock Text="UWP based unofficial updater for Windows 10 Mobile." Margin="20,0,0,0"/>
+        </StackPanel>
+        <Grid Grid.Row="1">
+            <Pivot Name="UpdtPivot" SelectedIndex="0" IsLocked="True">
+                <PivotItem Name="HomeItm" Header="Welcome">
+                    <Grid Margin="0,-3,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Line Stroke="{ThemeResource SystemAccentColor}" HorizontalAlignment="Left" X2="97" StrokeThickness="2"/>
+                        <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                            <TextBlock Text="Indroduction:" FontSize="18"/>
+                            <TextBlock TextWrapping="Wrap" Margin="0,5,0,0">
+                                <Span/>
+                                <Span/>
+                                This is a UWP version of my
+                                <Hyperlink NavigateUri="https://github.com/fadilfadz01/Universal_Updater">Universal Updater</Hyperlink>
+                                that made for PCs previously. Recently I released an app called
+                                <Hyperlink NavigateUri="https://github.com/fadilfadz01/CMD.Injector">CMD Injector</Hyperlink>
+                                which allows the users to access the CMD &amp; much more on W10M. And these leads me to  make this app back-end entirly working on the CMD &amp; batch scripts. So, in order to make this app working you must required CMD injected.
+                            </TextBlock>
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Name="DevInfoItm" Header="Device">
+                    <Grid Margin="0,-3,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Line Stroke="{ThemeResource SystemAccentColor}" HorizontalAlignment="Left" X2="69" StrokeThickness="2"/>
+                        <TextBlock Grid.Row="1" Text="Device Information:" FontSize="18" Margin="0,10,0,0"/>
+                        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto" Margin="0,5,0,0">
+                            <TextBlock Name="DevInfoBox" Text="Getting device info . . ." Padding="5,0,0,0"/>
+                        </ScrollViewer>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Name="InstPkgItm" Header="Packages">
+                    <Grid Margin="0,-3,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+                        <Line Stroke="{ThemeResource SystemAccentColor}" HorizontalAlignment="Left" X2="95" StrokeThickness="2"/>
+                        <TextBlock Grid.Row="1" Text="Installed Packages:" FontSize="18" Margin="0,10,0,0"/>
+                        <TextBox Grid.Row="2" Name="InstPkgBox" Text="Getting Installed Packages . . ." IsReadOnly="True" IsSpellCheckEnabled="False" AcceptsReturn="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="5,0,0,0"/>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Name="BuildSelItm" Header="Settings">
+                    <Grid Margin="0,-3,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*" MinHeight="230"/>
+                        </Grid.RowDefinitions>
+                        <Line Stroke="{ThemeResource SystemAccentColor}" HorizontalAlignment="Left" X2="83" StrokeThickness="2"/>
+                        <ScrollViewer Grid.Row="1">
+                            <StackPanel>
+                                <StackPanel Margin="0,10,0,0">
+                                    <TextBlock Text="Available Updates:" FontSize="18"/>
+                                    <StackPanel Margin="5,0,0,0">
+                                        <RadioButton Name="BuildOne" Content="10.0.10549.4" GroupName="AvailUpdtGrp" Checked="UpdtRadioBtn_Checked" IsEnabled="False"/>
+                                        <RadioButton Name="BuildTwo" Content="10.0.10570.0" GroupName="AvailUpdtGrp" Checked="UpdtRadioBtn_Checked" IsEnabled="False"/>
+                                        <RadioButton Name="BuildThree" Content="10.0.10586.107" GroupName="AvailUpdtGrp" Checked="UpdtRadioBtn_Checked" IsEnabled="False"/>
+                                        <RadioButton Name="BuildFour" Content="10.0.14393.1066" GroupName="AvailUpdtGrp" Checked="UpdtRadioBtn_Checked" IsEnabled="False"/>
+                                        <RadioButton Name="BuildFive" Content="10.0.15063.297" GroupName="AvailUpdtGrp" Checked="UpdtRadioBtn_Checked" IsEnabled="False"/>
+                                        <RadioButton Name="BuildSix" Content="10.0.15254.603" GroupName="AvailUpdtGrp" Checked="UpdtRadioBtn_Checked" IsEnabled="False"/>
+                                    </StackPanel>
+                                </StackPanel>
+                                <StackPanel Grid.Row="2" Margin="0,10,0,0">
+                                    <TextBlock Text="Manual Update:" FontSize="18"/>
+                                    <StackPanel Margin="5,5,0,0">
+                                        <Button Name="FilesSelBtn" Content="Select Files" MinWidth="110" Margin="0,0,0,5" Click="PackageSelBtn_Click"/>
+                                        <Button Name="FolderSelBtn" Content="Select Folder" MinWidth="110" Margin="0,5,0,0" Click="PackageSelBtn_Click"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                        </ScrollViewer>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Name="DownPkgItm" Header="Download">
+                    <Grid Margin="0,-3,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Line Stroke="{ThemeResource SystemAccentColor}" HorizontalAlignment="Left" X2="105" StrokeThickness="2"/>
+                        <TextBlock Grid.Row="1" Name="PkgTitleBox" FontSize="18" Margin="0,10,0,0"/>
+                        <TextBox Grid.Row="2" Name="DownPkgBox" IsReadOnly="True" IsSpellCheckEnabled="False" AcceptsReturn="True" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto" Padding="5,0,0,0"/>
+                        <StackPanel Grid.Row="3" VerticalAlignment="Center" Margin="0,10,0,0">
+                            <TextBlock Name="DownTitleBox" FontSize="18"/>
+                            <TextBlock Name="UpdtFileBox" Margin="0,5,0,0"/>
+                            <ProgressBar Name="DownFileProgress" Margin="0,10,0,0" Visibility="Collapsed"/>
+                            <ProgressBar Name="DownProgress" Margin="0,10,0,0"/>
+                            <Button Name="DownPkgBtn" HorizontalAlignment="Center" MinWidth="100" Margin="0,20,0,0" Click="DownPkgBtn_Click" IsEnabled="False"/>
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
+                <PivotItem Name="UpdtSysItm" Header="Update">
+                    <Grid Margin="0,-3,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Line Stroke="{ThemeResource SystemAccentColor}" HorizontalAlignment="Left" X2="76" StrokeThickness="2"/>
+                        <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                            <TextBlock Text="Note:" FontSize="18"/>
+                            <TextBlock Text="  Please do not close the app or lock the screen until the proccess is completed." TextWrapping="Wrap" Margin="0,5,0,0"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" VerticalAlignment="Center">
+                            <Image Name="UpdtLoadGif" Height="154" Width="154" Visibility="Collapsed"/>
+                            <TextBlock Name="UpdtLoadText" Text="Pushing and preparing the packages. Soon your device will reboot and start the update." TextWrapping="Wrap" HorizontalAlignment="Center" Visibility="Collapsed"/>
+                        </StackPanel>
+                        <StackPanel Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <CheckBox Content="Install from SD Card" IsEnabled="False"/>
+                            <Button Name="UpdtBtn" Content="Start update" MinWidth="100" HorizontalAlignment="Center" Margin="0,10,0,0" Click="UpdtBtn_Click"/>
+                        </StackPanel>
+                    </Grid>
+                </PivotItem>
+            </Pivot>
+        </Grid>
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center">
+            <Button Name="BackBtn" Content="&#xF0D5;" FontFamily="ms-appx:///Assets/Fonts/Segmdl2.ttf#Segoe MDL2 Assets" MinWidth="100" Margin="0,0,15,0" Click="BackBtn_Click" IsEnabled="False"/>
+            <Button Name="NextBtn" Content="&#xF0D6;" FontFamily="ms-appx:///Assets/Fonts/Segmdl2.ttf#Segoe MDL2 Assets" MinWidth="100" Margin="15,0,0,0" Click="NextBtn_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

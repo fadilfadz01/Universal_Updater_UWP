@@ -1,0 +1,41 @@
+﻿<Page
+    x:Class="Universal_Updater.About"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Universal_Updater"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <ScrollViewer HorizontalScrollMode="Disabled" VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel>
+                    <TextBlock Text="ABOUT" FontSize="35" FontWeight="Bold" Foreground="{ThemeResource SystemAccentColor}"  Margin="10,0,0,0"/>
+                    <TextBlock Name="VersionText" Margin="20,0,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Margin="0,10,0,0">
+                    <TextBlock Text="Developer:" FontSize="25" Margin="20,0,0,0"/>
+                    <TextBlock Text="Fadil Fadz (@fadilfadz01)" FontSize="15" Margin="25,0,0,0"/>
+                    <TextBlock FontSize="15" Margin="25,0,0,0" Foreground="{ThemeResource SystemAccentColor}" Width="175" HorizontalAlignment="Left">
+                        <Hyperlink NavigateUri="https://t.me/fadilfadz01">Telegram</Hyperlink>
+                        <Hyperlink NavigateUri="https://github.com/fadilfadz01">GitHub</Hyperlink>
+                        <Hyperlink NavigateUri="https://www.youtube.com/channel/UCe-pdxB7iM6i__rIkRf7Kkg">YouTube</Hyperlink>
+                    </TextBlock>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Margin="0,10,0,0">
+                    <TextBlock Text="Credits:" FontSize="25" Margin="20,0,0,0"/>
+                    <TextBlock Text="@TentacleSoftware - For Telnet client" FontSize="15" Margin="25,0,0,0"/>
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </ScrollViewer>
+</Page>
