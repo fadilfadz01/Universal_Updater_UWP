@@ -1,7 +1,7 @@
-set CacheFolder=%~1
-set ScriptLocation=%~2
-set Packages=%~3
+set LocalFolder=%~1
+set Packages=%~2
+set FromSD=%~3
 
-C:\Windows\Servicing\UpdateApp.exe install "%Packages%" >>"%CacheFolder%\Result.txt"
+if %FromSD% == 1 (C:\Windows\Servicing\UpdateApp.exe installfromsd "%Packages%" >>"%LocalFolder%\Result.txt") else (C:\Windows\Servicing\UpdateApp.exe install "%Packages%" >>"%LocalFolder%\Result.txt")
 
-echo.>"%CacheFolder%\End3.txt"
+echo.>"%LocalFolder%\End3.txt"

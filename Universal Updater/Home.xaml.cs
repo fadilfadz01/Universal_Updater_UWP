@@ -33,26 +33,27 @@ namespace Universal_Updater
     /// </summary>
     public sealed partial class Home : Page
     {
-        ulong build = (ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion) & 0x00000000FFFF0000L) >> 16;
-        string InstalledLocation = Windows.Application­Model.Package.Current.Installed­Location.Path;
-        StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
-        static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         TelnetClient tClient = new TelnetClient(TimeSpan.FromSeconds(1), cancellationTokenSource.Token);
         RadioButton SelectedUpdate;
-        IReadOnlyList<StorageFile> UpdateFiles;
+        DisplayRequest _displayRequest;
         StorageFolder UpdateFolder;
         StorageFolder Packages;
         StorageFolder DownPkgFold;
         StorageFolder filteredFolder;
+        StorageFolder LocalFolder = ApplicationData.Current.LocalFolder;
+        StorageFolder External = KnownFolders.RemovableDevices;
+        IReadOnlyList<StorageFile> UpdateFiles;
+        string InstalledLocation = Windows.Application­Model.Package.Current.Installed­Location.Path;
+        string GetUpdateFiles;
+        string packageName;
         string[] InstalledPackages;
         string[] LinkFile;
         string[] DownloadLinks;
-        string GetUpdateFiles;
-        string packageName;
         string[] knownPackages = { "MICROSOFT.MS_BOOTSEQUENCE_RETAIL.EFIESP", "MICROSOFT.MS_BOOTSEQUENCE_RETAIL.MAINOS", "MICROSOFT.MS_COMMSENHANCEMENTGLOBAL.MAINOS", "MICROSOFT.MS_COMMSMESSAGINGGLOBAL.MAINOS", "MICROSOFT.MS_PROJECTA.MAINOS", "MICROSOFT.MICROSOFTPHONEFM.PLATFORMMANIFEST.EFIESP", "MICROSOFT.MICROSOFTPHONEFM.PLATFORMMANIFEST.MAINOS", "MICROSOFT.MICROSOFTPHONEFM.PLATFORMMANIFEST.UPDATEOS", "MICROSOFT.USERINSTALLABLEFM.PLATFORMMANIFEST.MAINOS" };
+        ulong build = (ulong.Parse(AnalyticsInfo.VersionInfo.DeviceFamilyVersion) & 0x00000000FFFF0000L) >> 16;
+        static CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
         int State = 0;
         int flag = 0;
-        private DisplayRequest _displayRequest;
 
         public Home()
         {
@@ -86,7 +87,7 @@ namespace Universal_Updater
                     }
                     DevInfoBox.Text = await FileIO.ReadTextAsync(await LocalFolder.GetFileAsync("DeviceInfo.txt"));
                     NextBtn.IsEnabled = true;
-                    _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\GetInstalledPackages.bat\" \"" + LocalFolder.Path + "\" \"" + InstalledLocation + "\"");
+                    _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\GetInstalledPackages.bat\" \"" + LocalFolder.Path + "\"");
                     while (File.Exists($"{LocalFolder.Path}\\End2.txt") == false)
                     {
                         await Task.Delay(200);
@@ -235,6 +236,14 @@ namespace Universal_Updater
                     DownloadLinks = await GetLines(LocalFolder.Path + "\\DownloadLinks.txt");
                     DownPkgBtn.IsEnabled = true;
                     State = 0;
+                }
+            }
+            if (UpdtPivot.SelectedIndex == 4)
+            {
+                StorageFolder sdCard = (await External.GetFoldersAsync()).FirstOrDefault();
+                if (sdCard != null)
+                {
+                    InstallSdcardCheck.IsEnabled = true;
                 }
             }
         }
@@ -441,7 +450,7 @@ namespace Universal_Updater
                     });
                     DownProgress.Maximum = DownloadLinks.Length - 1;
                     DownPkgFold = await downloadsFolder.CreateFolderAsync($"Universal Updater ({SelectedUpdate.Content.ToString()})", CreationCollisionOption.ReplaceExisting);
-                    for (int i = 0; i < DownloadLinks.Length; i++)
+                    for (int i = 0; i < DownloadLinks.Length - 1; i++)
                     {
                         Uri sourceFile = new Uri(DownloadLinks[i]);
                         packageName = Path.GetFileName(sourceFile.LocalPath);
@@ -486,6 +495,11 @@ namespace Universal_Updater
 
         private async void UpdtBtn_Click(object sender, RoutedEventArgs e)
         {
+            int fromSD = 0;
+            if (InstallSdcardCheck.IsChecked == true)
+            {
+                fromSD = 1;
+            }
             if (App.Current.RequestedTheme == ApplicationTheme.Dark)
             {
                 UpdtLoadGif.Source = new BitmapImage(new Uri("ms-appx:///Assets/Gifs/LoadingLight.gif"));
@@ -510,15 +524,15 @@ namespace Universal_Updater
             }
             if (BuildOne.IsChecked == true || BuildTwo.IsChecked == true || BuildThree.IsChecked == true || BuildFour.IsChecked == true || BuildFive.IsChecked == true || BuildSix.IsChecked == true)
             {
-                _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\SetUpdatePackages.bat\" \"" + LocalFolder.Path + "\" \"" + InstalledLocation + "\" \"" + DownPkgFold.Path + "\"");
+                _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\SetUpdatePackages.bat\" \"" + LocalFolder.Path + "\" \"" + DownPkgFold.Path + "\" \"" + fromSD + "\"");
             }
             else if (UpdateFolder != null)
             {
-                _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\SetUpdatePackages.bat\" \"" + LocalFolder.Path + "\" \"" + InstalledLocation + "\" \"" + filteredFolder.Path + "\"");
+                _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\SetUpdatePackages.bat\" \"" + LocalFolder.Path + "\" \"" + filteredFolder.Path + "\" \"" + fromSD + "\"");
             }
             else if (UpdateFiles != null)
             {
-                _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\SetUpdatePackages.bat\" \"" + LocalFolder.Path + "\" \"" + InstalledLocation + "\" \"" + Packages.Path + "\"");
+                _ = sendCommand("\"" + InstalledLocation + "\\Contents\\BatchScripts\\SetUpdatePackages.bat\" \"" + LocalFolder.Path + "\" \"" + Packages.Path + "\" \"" + fromSD + "\"");
             }
             while (File.Exists($"{LocalFolder.Path}\\End3.txt") == false)
             {
